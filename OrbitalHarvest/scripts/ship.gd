@@ -23,6 +23,9 @@ var acceleration := Vector2(0,0)
 var accel_angle : float = 0.0
 var is_active : bool = true
 
+func _ready():
+	reset_ship()
+
 func _process(delta):
 	pass
 
