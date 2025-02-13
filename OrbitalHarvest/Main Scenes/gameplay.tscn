@@ -15,15 +15,18 @@ point_count = 9
 [node name="Gameplay" type="Node2D"]
 
 [node name="Starfield" type="Sprite2D" parent="."]
-position = Vector2(989, 636)
+light_mask = 512
+z_index = -1000
+position = Vector2(989, 640)
 scale = Vector2(0.992445, 1.00349)
 texture = ExtResource("1_vv18f")
 
 [node name="StartPosition" type="Node2D" parent="."]
 position = Vector2(983, 636)
+scale = Vector2(-8.09353, 1.85718)
 
 [node name="Player" parent="." instance=ExtResource("2_ycjnb")]
-position = Vector2(1168, 614)
+position = Vector2(2221, 635)
 accel_rate = 5.0
 rot_speed = 5.0
 

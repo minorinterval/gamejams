@@ -44,8 +44,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
 fov = 26.1
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="TextureRect/SubViewport"]
-transform = Transform3D(0.653539, -0.435482, 0.468001, 0.318183, 0.797036, 0.886203, -0.682758, 0, 0.730645, 6.99357, 3.78027, 11.4322)
-light_energy = 0.536
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7629, 0, 32)
+light_energy = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, -1)

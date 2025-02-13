@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bm1t5fx6mve7h"]
+[gd_scene load_steps=10 format=3 uid="uid://bm1t5fx6mve7h"]
 
 [ext_resource type="Script" path="res://scripts/ship.gd" id="1_5bono"]
 [ext_resource type="Shader" path="res://shaders/shockwave.gdshader" id="2_pcvyd"]
@@ -13,6 +13,15 @@ shader_parameter/force = 1.0
 shader_parameter/size = 0.0
 shader_parameter/thickness = 0.0
 
+[sub_resource type="Gradient" id="Gradient_l4p2w"]
+offsets = PackedFloat32Array(0, 0.733766)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1t25c"]
+gradient = SubResource("Gradient_l4p2w")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sg2me"]
 radius = 32.0
 height = 64.0
@@ -21,11 +30,13 @@ height = 64.0
 script = ExtResource("1_5bono")
 
 [node name="ship" type="Sprite2D" parent="."]
+light_mask = 2
 position = Vector2(-2.38419e-07, -2)
 scale = Vector2(0.38, 0.38)
 texture = ExtResource("2_w1pgo")
 
 [node name="Shockwave" type="Sprite2D" parent="ship"]
+light_mask = 2
 material = SubResource("ShaderMaterial_n2rxs")
 position = Vector2(6.27418e-07, 5.26316)
 scale = Vector2(6, 6)
@@ -52,6 +63,16 @@ scale = Vector2(0.153, 0.29)
 position = Vector2(71.0526, -42.1053)
 rotation = -1.5708
 scale = Vector2(0.153, 0.29)
+
+[node name="JetLight" type="PointLight2D" parent="ship"]
+position = Vector2(5.26316, 5.26316)
+scale = Vector2(10, 10)
+color = Color(0, 1, 1, 1)
+energy = 0.6
+range_z_min = 0
+range_layer_max = 1
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_1t25c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2)
