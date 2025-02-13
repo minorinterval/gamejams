@@ -60,22 +60,10 @@ func _physics_process(delta):
 		acceleration = Vector2(-1,1)
 	elif (Input.is_action_pressed("move_down") && Input.is_action_pressed("move_right")):
 		acceleration = Vector2(1,1)
-	if Input.is_action_just_pressed("shockwave"):
-		# set shockwave center to ship position
-		Shockwave.material.set_shader_parameter("global_position",get_global_transform().origin)
-		# trigger shockwave animation
-		Shockwave.material.set_shader_parameter("size",0.0)
-		var tween = Shockwave.create_tween();
-		tween.tween_property(Shockwave.get_material(),"shader_parameter/size",0.3,0.35)
-		tween.connect("finished", func _reset():Shockwave.material.set_shader_parameter("size",0.0))
-		
-		#find asteroids within radius
-		for asteroid in get_tree().get_nodes_in_group("Asteroids"):
-			var distance = asteroid.global_position.distance_to(global_position)
-			if distance < shockwave_radius:
-				var direction = global_position.direction_to(asteroid.global_position)
-				var force = shockwave_strengh * (1.0 - (distance / shockwave_radius))
-				asteroid.shockwaved(direction,force,1)
+	if Input.is_action_just_pressed("attractor"):
+		shockwave(-1)
+	if Input.is_action_just_pressed("repulsor"):
+		shockwave(1)
 	
 	# Acceleration is only used for rotating the ship in that direction,
 	# not for actually moving in that direction. I see no need to simulate 
@@ -83,7 +71,7 @@ func _physics_process(delta):
 	accel_angle = acceleration.angle()
 	
 	if here_we_go():
-		#rotate only while accelerating in any direction
+		#rotate and fire jets only during user input
 		jetfire_center.modulate.a = 255;
 		jet_light.enabled = true
 		rotate_to_target(acceleration,delta)
@@ -163,3 +151,28 @@ func reset_ship():
 	await get_tree().create_timer(0.14).timeout
 	player.visible = true
 	is_active = true
+
+func shockwave(type):
+	var init_size = 0.3
+	var final_size = 0.0
+	var duration = 0.35
+	if type == 1:
+		init_size = 0.0
+		final_size = 0.3
+	
+	# set shockwave center to ship position
+	Shockwave.material.set_shader_parameter("global_position",get_global_transform().origin)
+	# trigger shockwave animation
+	Shockwave.material.set_shader_parameter("size",init_size)
+	Shockwave.visible = true
+	var tween = Shockwave.create_tween();
+	tween.tween_property(Shockwave.get_material(),"shader_parameter/size",final_size,duration)
+	tween.connect("finished", func _reset():Shockwave.visible = false)
+	
+	#find asteroids within radius
+	for asteroid in get_tree().get_nodes_in_group("Asteroids"):
+		var distance = asteroid.global_position.distance_to(global_position)
+		if distance < shockwave_radius:
+			var direction = global_position.direction_to(asteroid.global_position)
+			var force = shockwave_strengh * (1.0 - (distance / shockwave_radius))
+			asteroid.shockwave2(type,direction,force,1)

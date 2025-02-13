@@ -15,8 +15,8 @@ func _on_body_entered(body: Node2D) -> void:
 func _physics_process(delta):
 	move_and_collide(vel * delta)
 
-func shockwaved(direction,force,num):
-	apply_central_impulse(-direction*force)
+func shockwave2(type,direction,force,num):
+	apply_central_impulse(type*direction*force)
 	
 	if num < chain_reaction_length:
 		num += 1
@@ -25,4 +25,4 @@ func shockwaved(direction,force,num):
 			if (distance > 1 && distance < chain_reaction_radius):
 				var direction2 = global_position.direction_to(asteroid.global_position)
 				var force2 = chain_force_factor * force * (1.0 - (distance / chain_reaction_radius))
-				asteroid.shockwaved(direction2,force2,num)
+				asteroid.shockwave2(type,direction2,force2,num)
