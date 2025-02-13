@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bm1t5fx6mve7h"]
 
-[ext_resource type="Script" path="res://Player/ship.gd" id="1_5bono"]
+[ext_resource type="Script" path="res://scripts/ship.gd" id="1_5bono"]
 [ext_resource type="Shader" path="res://shaders/shockwave.gdshader" id="2_pcvyd"]
 [ext_resource type="Texture2D" uid="uid://b741qlmnb61cs" path="res://assets/ship v2.png" id="2_w1pgo"]
 [ext_resource type="Texture2D" uid="uid://bkdtc8w10jskd" path="res://assets/black.png" id="3_6hbaq"]

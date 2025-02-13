@@ -69,10 +69,9 @@ func _physics_process(delta):
 		for asteroid in get_tree().get_nodes_in_group("Asteroids"):
 			var distance = asteroid.global_position.distance_to(global_position)
 			if distance < shockwave_radius:
-				# push 'em
 				var direction = global_position.direction_to(asteroid.global_position)
 				var force = shockwave_strengh * (1.0 - (distance / shockwave_radius))
-				asteroid.shockwaved(direction,force)
+				asteroid.shockwaved(direction,force,1)
 	
 	# Acceleration is only used for rotating the ship in that direction,
 	# not for actually moving in that direction. I see no need to simulate 
