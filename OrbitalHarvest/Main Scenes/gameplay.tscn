@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c1m6sbq6epmnm"]
+[gd_scene load_steps=7 format=3 uid="uid://c1m6sbq6epmnm"]
 
 [ext_resource type="Texture2D" uid="uid://ccdffraed188i" path="res://assets/starfield.png" id="1_vv18f"]
 [ext_resource type="PackedScene" uid="uid://bm1t5fx6mve7h" path="res://Player/ship.tscn" id="2_ycjnb"]
 [ext_resource type="PackedScene" uid="uid://dhhmd66wlh1k3" path="res://Other scenes/black_hole.tscn" id="3_dhqva"]
 [ext_resource type="PackedScene" uid="uid://bolsa0xuvxtjy" path="res://Other scenes/asteroid.tscn" id="4_a1ney"]
+[ext_resource type="Script" path="res://scripts/reset_button.gd" id="5_qjoat"]
 
 [sub_resource type="Curve2D" id="Curve2D_m475s"]
 _data = {
@@ -69,4 +70,14 @@ position = Vector2(14.0311, 1.76874)
 rotation = 1.77675
 movement_speed = 20
 
+[node name="Button" type="Button" parent="."]
+offset_left = 17.0
+offset_top = 1139.0
+offset_right = 112.0
+offset_bottom = 1185.0
+toggle_mode = true
+text = "Reset"
+script = ExtResource("5_qjoat")
+
 [connection signal="body_entered" from="Path2D/PathFollow2D/BlackHole" to="Path2D/PathFollow2D/BlackHole" method="_on_body_entered"]
+[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]

@@ -23,7 +23,6 @@ func shockwaved(direction,force,num):
 		for asteroid in get_tree().get_nodes_in_group("Asteroids"):
 			var distance = asteroid.global_position.distance_to(global_position)
 			if (distance > 1 && distance < chain_reaction_radius):
-				# push 'em
 				var direction2 = global_position.direction_to(asteroid.global_position)
 				var force2 = chain_force_factor * force * (1.0 - (distance / chain_reaction_radius))
 				asteroid.shockwaved(direction2,force2,num)
