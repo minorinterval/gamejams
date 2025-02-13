@@ -8,6 +8,7 @@ extends CharacterBody2D
 @onready var jetfire_r: Node2D = $ship/Jetfire_R
 @onready var jetfire_l_side: Node2D = $ship/Jetfire_L_side
 @onready var jetfire_r_side: Node2D = $ship/Jetfire_R_side
+@onready var jet_light: PointLight2D = $ship/JetLight
 
 @onready var Shockwave: Sprite2D = $ship/Shockwave
 
@@ -83,17 +84,16 @@ func _physics_process(delta):
 	
 	if here_we_go():
 		#rotate only while accelerating in any direction
-		rotate_to_target(acceleration,delta)
-		
-	# show the jets firing only if accelerating
-	if (acceleration.length() > 0):
 		jetfire_center.modulate.a = 255;
+		jet_light.enabled = true
+		rotate_to_target(acceleration,delta)
 	else:
 		jetfire_center.modulate.a = 0;
 		jetfire_l.modulate.a = 0;
 		jetfire_r.modulate.a = 0;
 		jetfire_l_side.modulate.a = 0;
 		jetfire_r_side.modulate.a = 0;
+		jet_light.enabled = false
 	
 	# limit speed for sanity
 	if vel.length() > top_speed:
@@ -144,7 +144,6 @@ func here_we_go():
 	else: return false
 
 func oh_no():
-	print("You died. Idiot.")
 	player.visible = false
 	is_active = false
 	await get_tree().create_timer(1).timeout
