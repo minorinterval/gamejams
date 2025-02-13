@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://bolsa0xuvxtjy"]
+
+[ext_resource type="Script" path="res://scripts/asteroid.gd" id="1_wpmh7"]
+[ext_resource type="Script" path="res://scripts/rotate_asteroid.gd" id="2_lvu3g"]
+[ext_resource type="ArrayMesh" uid="uid://ocpiytspvdui" path="res://assets/asteroid.obj" id="3_2nabf"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4t8jr"]
+viewport_path = NodePath("TextureRect/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vd3f"]
+albedo_color = Color(0.619489, 0.619489, 0.619489, 1)
+metallic_specular = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_10muf"]
+radius = 26.0
+
+[node name="Asteroid" type="RigidBody2D"]
+script = ExtResource("1_wpmh7")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -52.0
+offset_top = -50.0
+offset_right = 48.0
+offset_bottom = 49.9999
+texture = SubResource("ViewportTexture_4t8jr")
+metadata/_edit_use_anchors_ = true
+
+[node name="SubViewport" type="SubViewport" parent="TextureRect"]
+own_world_3d = true
+transparent_bg = true
+size = Vector2i(100, 100)
+
+[node name="Rotate Asteroid" type="Node3D" parent="TextureRect/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.129994, 1.19209e-07, 0.186635)
+script = ExtResource("2_lvu3g")
+
+[node name="Asteroid" type="MeshInstance3D" parent="TextureRect/SubViewport/Rotate Asteroid"]
+material_overlay = SubResource("StandardMaterial3D_5vd3f")
+mesh = ExtResource("3_2nabf")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="TextureRect/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.40434)
+fov = 26.1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="TextureRect/SubViewport"]
+transform = Transform3D(0.653539, -0.435482, 0.468001, 0.318183, 0.797036, 0.886203, -0.682758, 0, 0.730645, 6.99357, 3.78027, 11.4322)
+light_energy = 0.536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -1)
+shape = SubResource("CircleShape2D_10muf")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://bm1t5fx6mve7h"]
+
+[ext_resource type="Script" path="res://Player/ship.gd" id="1_5bono"]
+[ext_resource type="Shader" path="res://shaders/shockwave.gdshader" id="2_pcvyd"]
+[ext_resource type="Texture2D" uid="uid://b741qlmnb61cs" path="res://assets/ship v2.png" id="2_w1pgo"]
+[ext_resource type="Texture2D" uid="uid://bkdtc8w10jskd" path="res://assets/black.png" id="3_6hbaq"]
+[ext_resource type="PackedScene" uid="uid://ck5vdekgffhsc" path="res://Player/jetfire.tscn" id="3_keihg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n2rxs"]
+shader = ExtResource("2_pcvyd")
+shader_parameter/global_position = Vector2(800, 500)
+shader_parameter/force = 1.0
+shader_parameter/size = 0.0
+shader_parameter/thickness = 0.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sg2me"]
+radius = 32.0
+height = 64.0
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_5bono")
+
+[node name="ship" type="Sprite2D" parent="."]
+position = Vector2(-2.38419e-07, -2)
+scale = Vector2(0.38, 0.38)
+texture = ExtResource("2_w1pgo")
+
+[node name="Shockwave" type="Sprite2D" parent="ship"]
+material = SubResource("ShaderMaterial_n2rxs")
+position = Vector2(6.27418e-07, 5.26316)
+scale = Vector2(6, 6)
+texture = ExtResource("3_6hbaq")
+
+[node name="Jetfire_Center" parent="ship" instance=ExtResource("3_keihg")]
+position = Vector2(2.63158, 42.1053)
+scale = Vector2(0.263158, 0.842105)
+
+[node name="Jetfire_L" parent="ship" instance=ExtResource("3_keihg")]
+position = Vector2(-60.5263, 42.1053)
+scale = Vector2(0.263, 0.5)
+
+[node name="Jetfire_R" parent="ship" instance=ExtResource("3_keihg")]
+position = Vector2(60.5263, 42.1053)
+scale = Vector2(0.263, 0.5)
+
+[node name="Jetfire_L_side" parent="ship" instance=ExtResource("3_keihg")]
+position = Vector2(-68.4211, -42.1053)
+rotation = 1.5708
+scale = Vector2(0.153, 0.29)
+
+[node name="Jetfire_R_side" parent="ship" instance=ExtResource("3_keihg")]
+position = Vector2(71.0526, -42.1053)
+rotation = -1.5708
+scale = Vector2(0.153, 0.29)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("CapsuleShape2D_sg2me")

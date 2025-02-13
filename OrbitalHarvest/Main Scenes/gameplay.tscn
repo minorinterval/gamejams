@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1m6sbq6epmnm"]
+
+[ext_resource type="Texture2D" uid="uid://ccdffraed188i" path="res://assets/starfield.png" id="1_vv18f"]
+[ext_resource type="PackedScene" uid="uid://bm1t5fx6mve7h" path="res://Player/ship.tscn" id="2_ycjnb"]
+[ext_resource type="PackedScene" uid="uid://dhhmd66wlh1k3" path="res://Other scenes/black_hole.tscn" id="3_dhqva"]
+[ext_resource type="PackedScene" uid="uid://bolsa0xuvxtjy" path="res://Other scenes/asteroid.tscn" id="4_a1ney"]
+
+[sub_resource type="Curve2D" id="Curve2D_m475s"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1379, 1077, 146.636, 28.154, -146.636, -28.154, 591, 1064, 9.38468, 172.443, -9.38468, -172.443, 237, 708, -96.1929, 68.0389, 96.1929, -68.0389, 370, 292, -212.328, 0, 212.328, 0, 1106, 150, -136.078, -122.001, 136.078, 122.001, 1665, 238, 22.2886, -164.232, -22.2886, 164.232, 1825, 700, 103.231, -52.7888, -103.231, 52.7888, 1555, 1030, 0, 0, 0, 0, 1379, 1077)
+}
+point_count = 9
+
+[node name="Gameplay" type="Node2D"]
+
+[node name="Starfield" type="Sprite2D" parent="."]
+position = Vector2(989, 636)
+scale = Vector2(0.992445, 1.00349)
+texture = ExtResource("1_vv18f")
+
+[node name="StartPosition" type="Node2D" parent="."]
+position = Vector2(983, 636)
+
+[node name="Player" parent="." instance=ExtResource("2_ycjnb")]
+position = Vector2(1168, 614)
+accel_rate = 5.0
+rot_speed = 5.0
+
+[node name="Asteroid" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(1430, 704)
+
+[node name="Asteroid2" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(1159, 802)
+
+[node name="Asteroid3" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(800, 438)
+
+[node name="Asteroid4" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(564, 665)
+
+[node name="Asteroid5" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(666, 876)
+
+[node name="Asteroid6" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(1502, 273)
+
+[node name="Asteroid7" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(664, 363)
+
+[node name="Asteroid8" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(853, 151)
+
+[node name="Asteroid9" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(183, 151)
+
+[node name="Asteroid10" parent="." groups=["Asteroids"] instance=ExtResource("4_a1ney")]
+position = Vector2(1764, 768)
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0, 40)
+curve = SubResource("Curve2D_m475s")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(1379, 1077)
+rotation = -3.1251
+
+[node name="BlackHole" parent="Path2D/PathFollow2D" instance=ExtResource("3_dhqva")]
+position = Vector2(14.0311, 1.76874)
+rotation = 1.77675
+movement_speed = 20
+
+[connection signal="body_entered" from="Path2D/PathFollow2D/BlackHole" to="Path2D/PathFollow2D/BlackHole" method="_on_body_entered"]

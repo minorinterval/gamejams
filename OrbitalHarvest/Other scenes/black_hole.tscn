@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://dhhmd66wlh1k3"]
+
+[ext_resource type="Texture2D" uid="uid://8m62gjvwx6s" path="res://icon.svg" id="1_bhs8o"]
+[ext_resource type="Shader" path="res://shaders/black_hole.gdshader" id="1_gglnn"]
+[ext_resource type="Script" path="res://scripts/black_hole.gd" id="1_mg0pq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bdywo"]
+shader = ExtResource("1_gglnn")
+shader_parameter/strength = 0.01
+shader_parameter/black_radius = 0.65
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hhvq1"]
+radius = 41.0
+
+[node name="BlackHole" type="Area2D"]
+script = ExtResource("1_mg0pq")
+
+[node name="Shape" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_bdywo")
+scale = Vector2(2.34375, 2.34375)
+texture = ExtResource("1_bhs8o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hhvq1")
