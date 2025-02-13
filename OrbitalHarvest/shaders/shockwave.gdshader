@@ -17,6 +17,6 @@ void fragment(){
 	vec2 scaledUV = (SCREEN_UV - vec2(0.5, 0.0) ) / vec2(ratio, 1.0) + vec2(0.5, 0.0);
 	float mask = (1.0 - smoothstep(size-0.1, size, length(scaledUV - center))) * smoothstep(size-thickness-0.1, size-thickness, length(scaledUV - center));
 	vec2 disp = normalize(SCREEN_UV - center) * force * mask;
-	COLOR = texture(SCREEN_TEXTURE, SCREEN_UV - disp);
+	COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV - disp, 0);
 	//COLOR.rgb = vec3(mask);
 }
