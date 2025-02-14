@@ -18,10 +18,11 @@ radius = 26.0
 script = ExtResource("1_wpmh7")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_left = -52.0
-offset_top = -50.0
-offset_right = 48.0
-offset_bottom = 49.9999
+light_mask = 4
+offset_left = -50.0
+offset_top = -54.0
+offset_right = 50.0
+offset_bottom = 45.9999
 texture = SubResource("ViewportTexture_4t8jr")
 metadata/_edit_use_anchors_ = true
 

@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-@onready var start_position: Node2D = $"../StartPosition"
+@onready var start_position1: Node2D = $"../StartPosition1"
+@onready var start_position2: Node2D = $"../StartPosition2"
 @onready var player: CharacterBody2D = $"."
 @onready var ship: Sprite2D = $ship
 @onready var jetfire_center: Node2D = $ship/Jetfire_Center
@@ -9,9 +10,15 @@ extends CharacterBody2D
 @onready var jetfire_l_side: Node2D = $ship/Jetfire_L_side
 @onready var jetfire_r_side: Node2D = $ship/Jetfire_R_side
 @onready var jet_light: PointLight2D = $ship/JetLight
+@onready var jetfire_center_flame: Node2D = $ship/Jetfire_Center/Sprite2D
+@onready var jetfire_l_flame: Node2D = $ship/Jetfire_L/Sprite2D
+@onready var jetfire_r_flame: Node2D = $ship/Jetfire_R/Sprite2D
+@onready var jetfire_l_side_flame: Node2D = $ship/Jetfire_L_side/Sprite2D
+@onready var jetfire_r_side_flame: Node2D = $ship/Jetfire_R_side/Sprite2D
 
 @onready var Shockwave: Sprite2D = $ship/Shockwave
 
+@export var player_id = 1
 @export var top_speed : float = 1000.0
 @export var accel_rate : float = 6.0
 @export var rot_speed : float = 6.0
@@ -23,9 +30,39 @@ var move_angle : float = 0.0
 var acceleration := Vector2(0,0)
 var accel_angle : float = 0.0
 var is_active : bool = true
+var base_color
+var edge_color
 
 func _ready():
-	reset_ship()
+	Shockwave.visible = false
+	
+	#set jet light color per ship
+	var base_color_1 = [0,1,1,1]
+	var edge_color_1 = [0,0,1,1]
+	var base_color_2 = [1.0,0.25,0.0,1.0]
+	var edge_color_2 = [1.0,0.0,0.0,1.0]
+
+	if player_id == 1:
+		base_color = base_color_1
+		edge_color = edge_color_1
+		jet_light.set_color("00ffff")
+	elif player_id == 2:
+		base_color = base_color_2
+		edge_color = edge_color_2
+		jet_light.set_color("ff0000")
+	
+	jetfire_center_flame.material.set_shader_parameter("base_color",base_color)
+	jetfire_center_flame.material.set_shader_parameter("edge_color",edge_color)
+	jetfire_l_flame.material.set_shader_parameter("base_color",base_color)
+	jetfire_l_flame.material.set_shader_parameter("edge_color",edge_color)
+	jetfire_r_flame.material.set_shader_parameter("base_color",base_color)
+	jetfire_r_flame.material.set_shader_parameter("edge_color",edge_color)
+	jetfire_l_side_flame.material.set_shader_parameter("base_color",base_color)
+	jetfire_l_side_flame.material.set_shader_parameter("edge_color",edge_color)
+	jetfire_r_side_flame.material.set_shader_parameter("base_color",base_color)
+	jetfire_r_side_flame.material.set_shader_parameter("edge_color",edge_color)
+		
+	reset_ship(player_id)
 
 func _process(delta):
 	pass
@@ -40,29 +77,29 @@ func _physics_process(delta):
 	jetfire_l_side.modulate.a = 0;
 	jetfire_r_side.modulate.a = 0;
 	
-	if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("move_up_%s" % [player_id]):
 		vel.y -= accel_rate
 		acceleration = Vector2(0,-1)
-	elif Input.is_action_pressed("move_down"):
+	elif Input.is_action_pressed("move_down_%s" % [player_id]):
 		vel.y += accel_rate
 		acceleration = Vector2(0,1)
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left_%s" % [player_id]):
 		vel.x -= accel_rate
 		acceleration = Vector2(-1,0)
-	elif Input.is_action_pressed("move_right"):
+	elif Input.is_action_pressed("move_right_%s" % [player_id]):
 		vel.x += accel_rate
 		acceleration = Vector2(1,0)
-	if (Input.is_action_pressed("move_up") && Input.is_action_pressed("move_left")):
+	if (Input.is_action_pressed("move_up_%s" % [player_id]) && Input.is_action_pressed("move_left_%s" % [player_id])):
 		acceleration = Vector2(-1,-1)
-	elif (Input.is_action_pressed("move_up") && Input.is_action_pressed("move_right")):
+	elif (Input.is_action_pressed("move_up_%s" % [player_id]) && Input.is_action_pressed("move_right_%s" % [player_id])):
 		acceleration = Vector2(1,-1)
-	elif (Input.is_action_pressed("move_down") && Input.is_action_pressed("move_left")):
+	elif (Input.is_action_pressed("move_down_%s" % [player_id]) && Input.is_action_pressed("move_left_%s" % [player_id])):
 		acceleration = Vector2(-1,1)
-	elif (Input.is_action_pressed("move_down") && Input.is_action_pressed("move_right")):
+	elif (Input.is_action_pressed("move_down_%s" % [player_id]) && Input.is_action_pressed("move_right_%s" % [player_id])):
 		acceleration = Vector2(1,1)
-	if Input.is_action_just_pressed("attractor"):
+	if Input.is_action_just_pressed("attractor_%s" % [player_id]):
 		shockwave(-1)
-	if Input.is_action_just_pressed("repulsor"):
+	if Input.is_action_just_pressed("repulsor_%s" % [player_id]):
 		shockwave(1)
 	
 	# Acceleration is only used for rotating the ship in that direction,
@@ -124,10 +161,10 @@ func rotate_to_target(target,delta):
 		jetfire_l.modulate.a = 255;
 
 func here_we_go():
-	if (Input.is_action_pressed("move_left") or
-		Input.is_action_pressed("move_right") or
-		Input.is_action_pressed("move_up") or
-		Input.is_action_pressed("move_down")):
+	if (Input.is_action_pressed("move_left_%s" % [player_id]) or
+		Input.is_action_pressed("move_right_%s" % [player_id]) or
+		Input.is_action_pressed("move_up_%s" % [player_id]) or
+		Input.is_action_pressed("move_down_%s" % [player_id])):
 			return true
 	else: return false
 
@@ -135,12 +172,22 @@ func oh_no():
 	player.visible = false
 	is_active = false
 	await get_tree().create_timer(1).timeout
-	reset_ship()
+	reset_ship(player_id)
 	
-func reset_ship():
-	player.global_position = start_position.global_position
+func reset_ship(player_id):
+	var start_positions = [start_position1,start_position2]
+	player.global_position = start_positions[player_id-1].global_position
 	ship.global_rotation = 0
 	vel = Vector2(0,0)
+	
+	#start with all engines off
+	jetfire_center.modulate.a = 0;
+	jetfire_l.modulate.a = 0;
+	jetfire_r.modulate.a = 0;
+	jetfire_l_side.modulate.a = 0;
+	jetfire_r_side.modulate.a = 0;
+	jet_light.enabled = false
+	
 	player.visible = true
 	await get_tree().create_timer(0.14).timeout
 	player.visible = false

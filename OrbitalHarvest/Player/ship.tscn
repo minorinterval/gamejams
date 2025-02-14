@@ -30,7 +30,7 @@ height = 64.0
 script = ExtResource("1_5bono")
 
 [node name="ship" type="Sprite2D" parent="."]
-light_mask = 2
+light_mask = 4
 position = Vector2(-2.38419e-07, -2)
 scale = Vector2(0.38, 0.38)
 texture = ExtResource("2_w1pgo")

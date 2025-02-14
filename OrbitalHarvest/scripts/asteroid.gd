@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 @onready var camera: Camera3D = $TextureRect/SubViewport/Camera3D
-@onready var player: CharacterBody2D = $"../Player"
+@onready var player: CharacterBody2D = $"../../Player1"
 
 @export var chain_reaction_radius = 400.0
 @export var chain_reaction_length = 4
