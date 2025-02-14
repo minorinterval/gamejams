@@ -1,13 +1,35 @@
 extends RigidBody2D
 
+@onready var asteroid: RigidBody2D = $"."
+
 @onready var camera: Camera3D = $TextureRect/SubViewport/Camera3D
-@onready var player: CharacterBody2D = $"../../Player1"
+#@onready var player: CharacterBody2D = $Player1
 
 @export var chain_reaction_radius = 400.0
 @export var chain_reaction_length = 4
 @export var chain_force_factor = 0.25
 
+#should probably find the center, not hard code it (see also starfield.gd)
+@export var center = Vector2(1000,600)
+
 var vel = Vector2(0,0)
+
+func _ready():
+	asteroid.add_to_group("Asteroids")
+	
+	#asteroid.material.set_shader_parameter("alpha",0.0)
+	
+	# asteroids spawn anywhere in the middle. 
+	# get the spawn area from the level size instead of hardcoding
+	var wiggle = Vector2(randi()%1200 - 600 , randi()%1000 - 500)	
+	global_position = center + wiggle
+	
+	# asteroids start with slow drift in a random direction
+	var direction = Vector2(randf_range(-1.0,1.0),randf_range(-1.0,1.0))
+	apply_central_impulse(direction*10)
+	#var tween = asteroid.create_tween();
+	#tween.tween_property(get_material(),"shader_parameter/alpha",1.0,2.0)
+	
 
 func _on_body_entered(body: Node2D) -> void:
 	pass

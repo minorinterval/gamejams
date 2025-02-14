@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c1m6sbq6epmnm"]
+[gd_scene load_steps=13 format=3 uid="uid://c1m6sbq6epmnm"]
 
 [ext_resource type="Script" path="res://scripts/gameplay.gd" id="1_v1gxp"]
 [ext_resource type="Texture2D" uid="uid://ccdffraed188i" path="res://assets/starfield.png" id="1_vv18f"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://dhhmd66wlh1k3" path="res://Other scenes/black_hole.tscn" id="3_dhqva"]
 [ext_resource type="PackedScene" uid="uid://c2sg31fxkks78" path="res://Other scenes/mining_dock_1.tscn" id="3_nyt4h"]
 [ext_resource type="Script" path="res://Main Scenes/starfield.gd" id="4_2qasq"]
-[ext_resource type="PackedScene" uid="uid://bolsa0xuvxtjy" path="res://Other scenes/asteroid.tscn" id="4_a1ney"]
 [ext_resource type="Script" path="res://scripts/reset_button.gd" id="5_qjoat"]
 
 [sub_resource type="Curve2D" id="Curve2D_m475s"]
@@ -15,8 +14,24 @@ _data = {
 }
 point_count = 7
 
+[sub_resource type="SystemFont" id="SystemFont_6epxv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uj6mb"]
+resource_local_to_scene = true
+font = SubResource("SystemFont_6epxv")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_m723q"]
+resource_local_to_scene = true
+font = SubResource("SystemFont_6epxv")
+font_size = 64
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6qqdk"]
+size = Vector2(2176.5, 1363)
+
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_v1gxp")
+asteroid_number = 9
 
 [node name="Reset Button" type="Button" parent="."]
 offset_left = 17.0
@@ -46,9 +61,10 @@ texture = ExtResource("1_vv18f")
 script = ExtResource("4_2qasq")
 
 [node name="Mining Dock 1" parent="." instance=ExtResource("3_nyt4h")]
+position = Vector2(209, 611)
 
 [node name="Mining Dock 2" parent="." instance=ExtResource("3_nyt4h")]
-position = Vector2(1849, 612)
+position = Vector2(1771, 606)
 rotation = 3.14159
 player_id = 2
 
@@ -63,50 +79,43 @@ player_id = 2
 accel_rate = 5.0
 rot_speed = 5.0
 
-[node name="Asteroids" type="Node2D" parent="."]
-position = Vector2(1430, 704)
-
-[node name="Asteroid" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-
-[node name="Asteroid2" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-271, 98)
-
-[node name="Asteroid3" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-630, -266)
-
-[node name="Asteroid4" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-996, 112)
-
-[node name="Asteroid5" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-764, 172)
-
-[node name="Asteroid6" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(72, -431)
-
-[node name="Asteroid7" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-766, -341)
-
-[node name="Asteroid8" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-56, -411)
-
-[node name="Asteroid9" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(-1183, -494)
-
-[node name="Asteroid10" parent="Asteroids" groups=["Asteroids"] instance=ExtResource("4_a1ney")]
-position = Vector2(245, 270)
-
-[node name="Path2D" type="Path2D" parent="."]
+[node name="Black Hole Path2D" type="Path2D" parent="."]
 visible = false
 position = Vector2(0, 40)
 curve = SubResource("Curve2D_m475s")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+[node name="PathFollow2D" type="PathFollow2D" parent="Black Hole Path2D"]
 position = Vector2(638, 1291)
 rotation = -2.07916
 
-[node name="BlackHole" parent="Path2D/PathFollow2D" instance=ExtResource("3_dhqva")]
+[node name="BlackHole" parent="Black Hole Path2D/PathFollow2D" instance=ExtResource("3_dhqva")]
 position = Vector2(-204.723, 363.293)
 rotation = 1.77675
 
+[node name="Score 1" type="Label" parent="."]
+offset_left = 37.0
+offset_top = 561.0
+offset_right = 77.0
+offset_bottom = 649.0
+text = "0"
+label_settings = SubResource("LabelSettings_uj6mb")
+horizontal_alignment = 2
+
+[node name="Score 2" type="Label" parent="."]
+offset_left = 1921.0
+offset_top = 569.0
+offset_right = 1961.0
+offset_bottom = 657.0
+text = "0"
+label_settings = SubResource("LabelSettings_m723q")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+position = Vector2(1006.75, 600.5)
+shape = SubResource("RectangleShape2D_6qqdk")
+
 [connection signal="button_down" from="Reset Button" to="Reset Button" method="_on_button_down"]
-[connection signal="body_entered" from="Path2D/PathFollow2D/BlackHole" to="Path2D/PathFollow2D/BlackHole" method="_on_body_entered"]
+[connection signal="body_entered" from="Black Hole Path2D/PathFollow2D/BlackHole" to="Black Hole Path2D/PathFollow2D/BlackHole" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

@@ -233,6 +233,7 @@ randomness = 0.2
 fixed_fps = 60
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PackedVector2Array(-82, -1, 66, -87, 64, 83)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

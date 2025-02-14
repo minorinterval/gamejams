@@ -1,5 +1,6 @@
 extends Area2D
 
+@onready var gameplay: Node2D = $".."
 @onready var docklight_mid: PointLight2D = $"Docklight Mid"
 @onready var docklight_a: PointLight2D = $"Docklight A"
 @onready var docklight_b: PointLight2D = $"Docklight B"
@@ -13,14 +14,16 @@ extends Area2D
 @onready var lightning_c: Line2D = $"Docklight C/Lightning C"
 @onready var sparks_c: GPUParticles2D = $"Docklight C/Sparks C"
 @onready var flare_c: GPUParticles2D = $"Docklight C/Flare C"
+@onready var score_1_text: Label = $"../Score 1"
+@onready var score_2_text: Label = $"../Score 2"
 
 @export var player_id = 1
 @export var rot_speed = 3
 
+var color = 0;
 @export var base_color_1 = "00ffff"
 @export var base_color_2 = "ff0000"
 
-var color = 0;
 func _ready():
 	#start at a random orientation
 	rotation_degrees = randi()%360
@@ -51,7 +54,7 @@ func _process(delta):
 func _on_body_entered(body):
 	if body.is_in_group("Asteroids"):
 		zap(body)
-		print("Player ",player_id," scored!")
+		gameplay.score(player_id)
 		
 func zap(asteroid):
 	asteroid.queue_free()
