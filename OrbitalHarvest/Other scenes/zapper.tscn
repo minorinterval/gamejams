@@ -1,0 +1,124 @@
+[gd_scene load_steps=19 format=3 uid="uid://cii88pbfgxplk"]
+
+[ext_resource type="Script" path="res://scripts/zapper.gd" id="1_21r78"]
+[ext_resource type="Shader" uid="uid://dmjiandvqr7bw" path="res://shaders/mining_dock_lightning.tres" id="2_1r76w"]
+[ext_resource type="Texture2D" uid="uid://c2srhgxs6kfku" path="res://assets/lightning.png" id="3_404rv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3f3u6"]
+resource_local_to_scene = true
+shader = ExtResource("2_1r76w")
+shader_parameter/vanishing_value = 0.393
+shader_parameter/speed = Vector2(-2.5, 0)
+shader_parameter/basic_texture = ExtResource("3_404rv")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tumvm"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Curve" id="Curve_k5i3o"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.996689, 0.0115883), -0.820973, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_vgu5t"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_e0emo"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_p1jpk"]
+curve_x = SubResource("Curve_k5i3o")
+curve_y = SubResource("Curve_vgu5t")
+curve_z = SubResource("Curve_e0emo")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0twhr"]
+resource_local_to_scene = true
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 10.0
+emission_ring_radius = 20.0
+emission_ring_inner_radius = 0.0
+direction = Vector3(-1, 0, 0)
+spread = 75.0
+initial_velocity_min = -400.0
+initial_velocity_max = -200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.4
+scale_curve = SubResource("CurveXYZTexture_p1jpk")
+color = Color(0, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_bhsp4"]
+offsets = PackedFloat32Array(0, 0.162338, 0.451299)
+colors = PackedColorArray(1, 1, 1, 1, 0.460432, 0.460432, 0.460432, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8gajs"]
+gradient = SubResource("Gradient_bhsp4")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_whr53"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Curve" id="Curve_240vm"]
+_data = [Vector2(0.00779727, 0), 0.0, 0.0, 0, 0, Vector2(0.329435, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_egq76"]
+curve = SubResource("Curve_240vm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g0l4w"]
+resource_local_to_scene = true
+gravity = Vector3(0, 0, 0)
+scale_min = 0.7
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_egq76")
+color = Color(0, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_gby3s"]
+offsets = PackedFloat32Array(0, 0.152216, 0.531792)
+colors = PackedColorArray(1, 1, 1, 1, 0.610526, 0.610526, 0.610526, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_13gox"]
+gradient = SubResource("Gradient_gby3s")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Zapper" type="Node2D"]
+script = ExtResource("1_21r78")
+
+[node name="Lightning" type="Line2D" parent="."]
+material = SubResource("ShaderMaterial_3f3u6")
+position = Vector2(0, -1)
+points = PackedVector2Array(0, 0, -63, 94)
+width = 30.0
+default_color = Color(0, 1, 1, 1)
+texture_mode = 2
+
+[node name="Sparks" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_tumvm")
+position = Vector2(-63, 93)
+rotation = -1.1205
+process_material = SubResource("ParticleProcessMaterial_0twhr")
+texture = SubResource("GradientTexture2D_8gajs")
+lifetime = 0.2
+fixed_fps = 60
+
+[node name="Flare" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_whr53")
+position = Vector2(-63, 93)
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_g0l4w")
+texture = SubResource("GradientTexture2D_13gox")
+lifetime = 0.15
+explosiveness = 0.5
+randomness = 0.2
+fixed_fps = 60
+
+[connection signal="tree_entered" from="Lightning" to="." method="_on_lightning_tree_entered"]
+[connection signal="tree_entered" from="Sparks" to="." method="_on_sparks_tree_entered"]
+[connection signal="tree_entered" from="Flare" to="." method="_on_flare_tree_entered"]

@@ -1,9 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://c2sg31fxkks78"]
+[gd_scene load_steps=7 format=3 uid="uid://c2sg31fxkks78"]
 
 [ext_resource type="Texture2D" uid="uid://whn412lrpwxw" path="res://assets/Mining Dock v1.png" id="1_jcqlt"]
 [ext_resource type="Script" path="res://scripts/mining_dock.gd" id="1_odrnk"]
-[ext_resource type="Shader" uid="uid://dmjiandvqr7bw" path="res://shaders/mining_dock_lightning.tres" id="3_rcwwc"]
-[ext_resource type="Texture2D" uid="uid://c2srhgxs6kfku" path="res://assets/lightning.png" id="4_mbviy"]
+[ext_resource type="Script" path="res://scripts/zapper_detector.gd" id="3_4wdqx"]
 
 [sub_resource type="Gradient" id="Gradient_3nv72"]
 offsets = PackedFloat32Array(0, 0.707792)
@@ -14,88 +13,8 @@ gradient = SubResource("Gradient_3nv72")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3f3u6"]
-shader = ExtResource("3_rcwwc")
-shader_parameter/vanishing_value = 0.0
-shader_parameter/speed = Vector2(-2, 0)
-shader_parameter/basic_texture = ExtResource("4_mbviy")
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tumvm"]
-blend_mode = 1
-light_mode = 1
-
-[sub_resource type="Curve" id="Curve_k5i3o"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.996689, 0.0115883), -0.820973, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_vgu5t"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_e0emo"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_p1jpk"]
-curve_x = SubResource("Curve_k5i3o")
-curve_y = SubResource("Curve_vgu5t")
-curve_z = SubResource("Curve_e0emo")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0twhr"]
-resource_local_to_scene = true
-particle_flag_align_y = true
-particle_flag_disable_z = true
-emission_shape = 6
-emission_ring_axis = Vector3(0, 0, 1)
-emission_ring_height = 10.0
-emission_ring_radius = 20.0
-emission_ring_inner_radius = 0.0
-direction = Vector3(-1, 0, 0)
-spread = 75.0
-initial_velocity_min = -400.0
-initial_velocity_max = -200.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.1
-scale_max = 0.4
-scale_curve = SubResource("CurveXYZTexture_p1jpk")
-color = Color(0, 1, 1, 1)
-
-[sub_resource type="Gradient" id="Gradient_bhsp4"]
-offsets = PackedFloat32Array(0, 0.162338, 0.451299)
-colors = PackedColorArray(1, 1, 1, 1, 0.460432, 0.460432, 0.460432, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_8gajs"]
-gradient = SubResource("Gradient_bhsp4")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_whr53"]
-blend_mode = 1
-light_mode = 1
-
-[sub_resource type="Curve" id="Curve_240vm"]
-_data = [Vector2(0.00779727, 0), 0.0, 0.0, 0, 0, Vector2(0.329435, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_egq76"]
-curve = SubResource("Curve_240vm")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g0l4w"]
-resource_local_to_scene = true
-gravity = Vector3(0, 0, 0)
-scale_min = 0.7
-scale_max = 1.4
-scale_curve = SubResource("CurveTexture_egq76")
-color = Color(0, 1, 1, 1)
-
-[sub_resource type="Gradient" id="Gradient_gby3s"]
-offsets = PackedFloat32Array(0, 0.152216, 0.531792)
-colors = PackedColorArray(1, 1, 1, 1, 0.610526, 0.610526, 0.610526, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_13gox"]
-gradient = SubResource("Gradient_gby3s")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
+[sub_resource type="CircleShape2D" id="CircleShape2D_rjicg"]
+radius = 172.0
 
 [node name="Mining Dock 1" type="Area2D"]
 position = Vector2(147, 611)
@@ -126,36 +45,17 @@ range_layer_max = 1
 texture = SubResource("GradientTexture2D_apa62")
 texture_scale = 2.0
 
-[node name="Lightning A" type="Line2D" parent="Docklight A"]
-material = SubResource("ShaderMaterial_3f3u6")
-position = Vector2(95, 3)
-points = PackedVector2Array(76, -101, 16, -8)
-width = 30.0
-default_color = Color(0, 1, 1, 1)
-texture_mode = 2
+[node name="Asteroid Detector" type="Area2D" parent="Docklight A"]
+position = Vector2(-2, 1)
+script = ExtResource("3_4wdqx")
 
-[node name="Sparks A" type="GPUParticles2D" parent="Docklight A"]
-material = SubResource("CanvasItemMaterial_tumvm")
-position = Vector2(111, -5)
-rotation = -1.1205
-process_material = SubResource("ParticleProcessMaterial_0twhr")
-texture = SubResource("GradientTexture2D_8gajs")
-lifetime = 0.2
-fixed_fps = 60
-
-[node name="Flare A" type="GPUParticles2D" parent="Docklight A"]
-material = SubResource("CanvasItemMaterial_whr53")
-position = Vector2(107, -5)
-amount = 1
-process_material = SubResource("ParticleProcessMaterial_g0l4w")
-texture = SubResource("GradientTexture2D_13gox")
-lifetime = 0.15
-explosiveness = 0.5
-randomness = 0.2
-fixed_fps = 60
+[node name="Detection Zone" type="CollisionShape2D" parent="Docklight A/Asteroid Detector"]
+visible = false
+position = Vector2(1, -1)
+shape = SubResource("CircleShape2D_rjicg")
 
 [node name="Docklight B" type="PointLight2D" parent="."]
-position = Vector2(72, 96)
+position = Vector2(78, -100)
 color = Color(0, 0.235294, 1, 1)
 energy = 3.0
 range_z_min = 0
@@ -163,38 +63,17 @@ range_layer_max = 1
 texture = SubResource("GradientTexture2D_apa62")
 texture_scale = 2.0
 
-[node name="Lightning B" type="Line2D" parent="Docklight B"]
-material = SubResource("ShaderMaterial_3f3u6")
-position = Vector2(-60.6595, -116.917)
-rotation = -4.26908
-points = PackedVector2Array(76, -101, 16, -8)
-width = 30.0
-default_color = Color(0, 1, 1, 1)
-texture_mode = 2
+[node name="Asteroid Detector B" type="Area2D" parent="Docklight B"]
+position = Vector2(-5, 1)
+script = ExtResource("3_4wdqx")
 
-[node name="Sparks B" type="GPUParticles2D" parent="Docklight B"]
-material = SubResource("CanvasItemMaterial_tumvm")
-position = Vector2(-44.6595, -124.917)
-rotation = -4.26908
-process_material = SubResource("ParticleProcessMaterial_0twhr")
-texture = SubResource("GradientTexture2D_8gajs")
-lifetime = 0.2
-fixed_fps = 60
-
-[node name="Flare B" type="GPUParticles2D" parent="Docklight B"]
-material = SubResource("CanvasItemMaterial_whr53")
-position = Vector2(-48.6595, -124.917)
-rotation = -4.26908
-amount = 1
-process_material = SubResource("ParticleProcessMaterial_g0l4w")
-texture = SubResource("GradientTexture2D_13gox")
-lifetime = 0.15
-explosiveness = 0.5
-randomness = 0.2
-fixed_fps = 60
+[node name="Detection Zone" type="CollisionShape2D" parent="Docklight B/Asteroid Detector B"]
+visible = false
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_rjicg")
 
 [node name="Docklight C" type="PointLight2D" parent="."]
-position = Vector2(76, -102)
+position = Vector2(75, 100)
 color = Color(0, 0.235294, 1, 1)
 energy = 3.0
 range_z_min = 0
@@ -202,38 +81,23 @@ range_layer_max = 1
 texture = SubResource("GradientTexture2D_apa62")
 texture_scale = 2.0
 
-[node name="Lightning C" type="Line2D" parent="Docklight C"]
-material = SubResource("ShaderMaterial_3f3u6")
-position = Vector2(-51, 104)
-rotation = -2.19388
-points = PackedVector2Array(76, -101, 16, -8)
-width = 30.0
-default_color = Color(0, 1, 1, 1)
-texture_mode = 2
+[node name="Asteroid Detector C" type="Area2D" parent="Docklight C"]
+position = Vector2(-2, -3)
+script = ExtResource("3_4wdqx")
 
-[node name="Sparks C" type="GPUParticles2D" parent="Docklight C"]
-material = SubResource("CanvasItemMaterial_tumvm")
-position = Vector2(-61.7617, 94.9188)
-rotation = -2.19388
-process_material = SubResource("ParticleProcessMaterial_0twhr")
-texture = SubResource("GradientTexture2D_8gajs")
-lifetime = 0.2
-fixed_fps = 60
-
-[node name="Flare C" type="GPUParticles2D" parent="Docklight C"]
-material = SubResource("CanvasItemMaterial_whr53")
-position = Vector2(-65.7617, 94.9188)
-rotation = -2.19388
-amount = 1
-process_material = SubResource("ParticleProcessMaterial_g0l4w")
-texture = SubResource("GradientTexture2D_13gox")
-lifetime = 0.15
-explosiveness = 0.5
-randomness = 0.2
-fixed_fps = 60
+[node name="Detection Zone" type="CollisionShape2D" parent="Docklight C/Asteroid Detector C"]
+visible = false
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_rjicg")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 visible = false
 polygon = PackedVector2Array(-82, -1, 66, -87, 64, 83)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Docklight A/Asteroid Detector" to="Docklight A/Asteroid Detector" method="_on_body_entered"]
+[connection signal="body_exited" from="Docklight A/Asteroid Detector" to="Docklight A/Asteroid Detector" method="_on_body_exited"]
+[connection signal="body_entered" from="Docklight B/Asteroid Detector B" to="Docklight B/Asteroid Detector B" method="_on_body_entered"]
+[connection signal="body_exited" from="Docklight B/Asteroid Detector B" to="Docklight B/Asteroid Detector B" method="_on_body_exited"]
+[connection signal="body_entered" from="Docklight C/Asteroid Detector C" to="Docklight C/Asteroid Detector C" method="_on_body_entered"]
+[connection signal="body_exited" from="Docklight C/Asteroid Detector C" to="Docklight C/Asteroid Detector C" method="_on_body_exited"]

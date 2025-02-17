@@ -5,22 +5,16 @@ extends Area2D
 @onready var docklight_a: PointLight2D = $"Docklight A"
 @onready var docklight_b: PointLight2D = $"Docklight B"
 @onready var docklight_c: PointLight2D = $"Docklight C"
-@onready var lightning_a: Line2D = $"Docklight A/Lightning A"
-@onready var sparks_a: GPUParticles2D = $"Docklight A/Sparks A"
-@onready var flare_a: GPUParticles2D = $"Docklight A/Flare A"
-@onready var lightning_b: Line2D = $"Docklight B/Lightning B"
-@onready var sparks_b: GPUParticles2D = $"Docklight B/Sparks B"
-@onready var flare_b: GPUParticles2D = $"Docklight B/Flare B"
-@onready var lightning_c: Line2D = $"Docklight C/Lightning C"
-@onready var sparks_c: GPUParticles2D = $"Docklight C/Sparks C"
-@onready var flare_c: GPUParticles2D = $"Docklight C/Flare C"
+
 @onready var score_1_text: Label = $"../Score 1"
 @onready var score_2_text: Label = $"../Score 2"
 
 @export var player_id = 1
 @export var rot_speed = 3
+var score_1 = 0
+var score_2 = 0
 
-var color = 0;
+var color = 3;
 @export var base_color_1 = "00ffff"
 @export var base_color_2 = "ff0000"
 
@@ -33,28 +27,17 @@ func _ready():
 		color = base_color_1
 	elif player_id == 2:
 		color = base_color_2
+	#"color" is also referenced from zapper_detector
+	
 	docklight_mid.set_color(color)
 	docklight_a.set_color(color)
 	docklight_b.set_color(color)
 	docklight_c.set_color(color)
-	lightning_a.default_color = color
-	lightning_b.default_color = color
-	lightning_c.default_color = color
-	sparks_a.process_material.color = color
-	sparks_b.process_material.color = color
-	sparks_c.process_material.color = color
-	flare_a.process_material.color = color
-	flare_b.process_material.color = color
-	flare_c.process_material.color = color
 
 func _process(delta):
 	#spin slowly
 	rotation_degrees += rot_speed * delta
 
 func _on_body_entered(body):
-	if body.is_in_group("Asteroids"):
-		zap(body)
-		gameplay.score(player_id)
-		
-func zap(asteroid):
-	asteroid.queue_free()
+	pass
+	# maybe do something if a player flies thru?
